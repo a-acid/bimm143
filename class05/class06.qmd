@@ -1,0 +1,18 @@
+---
+title: "Class 6: R Functions"
+author: "Annmarie (A16442048)"
+date: 01/25/24
+format: html
+---
+
+## R Functions
+
+Functions are how we get stuff done. We call functions to do everything useful in R.
+
+One cool thing about R is that it makes writing your own functions comparatively easy.
+
+All functions in R have at least 3 things:
+
+-  a name (we get to pick this)
+- one or more input arguments (the input to our function)
+- the body (lines of code that do the work)
