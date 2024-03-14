@@ -1,4 +1,4 @@
-# bimm143
+# BIMM143
 Class work from W24 for [BIMM 143 at UC San Diego]
 (https://bioboot.github.io/bimm143_W24/).
 
