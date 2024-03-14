@@ -1,0 +1,113 @@
+---
+title: "Class 10 Structural Bioinformatics (Pt.1)"
+author: "A16442048"
+format: pdf
+---
+
+```{r}
+pbd_file <- "pdbstats.csv"
+pdb <- read.csv(pbd_file)
+```
+```{r}
+pdb
+```
+
+>Q1: What percentage of structures in the PDB are solved by X-Ray and Electron Microscopy.
+
+My pdb stats data frame has numbers with commas in them. This may cause us problems. Let's see:
+```{r}
+pdb$X.ray
+```
+```{r}
+x <- as.numeric("20000")
+```
+
+```{r}
+as.numeric(pdb$X.ray)
+```
+
+We found a function called `gsub()` now we can figure out how it works
+```{r}
+as.numeric(gsub(",","",pdb$X.ray))
+```
+
+I can turn this snippet into a function that I can use for every column in this table 
+
+```{r}
+commasum <- function(x){
+  sum(as.numeric(gsub(",","",x)))
+}
+
+commasum(pdb$X.ray)
+```
+
+Apply across all columns 
+```{r}
+totals <- apply(pdb,2,commasum)
+totals
+```
+
+```{r}
+totals/totals["Total"]*100
+```
+>Q2: What proportion of structures in the PDB are protein?
+
+86.7
+
+>Q3: Type HIV in the PDB website search box on the home page and determine how many HIV-1 protease structures are in the current PDB?
+
+```{r}
+(215684/2497751891*100)
+
+```
+
+# 2. Visualizing Protein Structure
+
+We will learn the basics of Mol * (mol-star)homepage: 
+https://molstar.org/viewer/
+
+We will play with PDB code 1HSG
+
+![](1HSG.png)
+
+Show the ASP 25 amino acids: 
+
+![HIV-Pr with a bound inhibitor showing the two important ASP 25 amino acids](1HSG_Asp.png)
+
+## Back to R and working with PDB structures
+
+Predict the dynamics (flexibility)  of an important protein
+
+
+```{r}
+library(bio3d)
+
+hiv <- read.pdb("1hsg")
+hiv
+```
+```{r}
+head(hiv$atom)
+```
+```{r}
+pdbseq(hiv)
+```
+
+Here we will do a Normal Mode Analysis (NMA) to predict fucntional motions of a kinase protein.
+
+```{r}
+adk <- read.pdb("6s36")
+adk
+```
+
+```{r}
+modes <- nma(adk)
+plot(modes)
+```
+
+Make a "movie" called a trajectory of the predicted motions:
+```{r}
+mktrj(modes, file="adk_m7.pdb")
+
+```
+
+Then I can open this file in Mol*
